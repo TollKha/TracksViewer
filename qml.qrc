@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>usb.png</file>
+        <file>bta.png</file>
+        <file>playing_mark.gif</file>
+    </qresource>
+</RCC>
