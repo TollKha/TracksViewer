@@ -1,26 +1,53 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import QtQuick.Layouts 1.3
 
 ApplicationWindow {
     visible: true
     width: 640
     height: 480
     title: qsTr("Scroll")
-    id: parentWindow
+    id: mainWindow
+
+    property var playingIndex : -1
 
     Component {
         id: trackDelegate
 
         Rectangle {
+            //propery bool isPlaying
+//            isPlaying : false
+
             width: parent.width
             height: 78
             color: "grey"
             radius: 5
 
             border.width: 1
-            border.color: parentWindow.color
+            border.color: mainWindow.color
 
             id: trackBackground
+
+            MouseArea {
+                anchors.fill: parent
+                onPressed: {
+                    parent.color = "darkgrey"
+                }
+                onReleased: {
+                    parent.color = "grey"
+                    //isPlaying = true
+
+                    if (playingIndex != -1) {
+                        tracksListModel.setProperty(playingIndex, "isPlaying", false)
+                        console.log(JSON.stringify(tracksListModel.get(playingIndex)))
+                    }
+                    tracksListModel.setProperty(index, "isPlaying", true)
+                    playingIndex = index
+                }
+                onPressedChanged: {
+
+                }
+            }
 
             Row {
                 spacing: 2
@@ -29,13 +56,8 @@ ApplicationWindow {
 
                 id: trackRow
 
-//                Rectangle { color: "red"; width: 50; height: 50 }
-//                Rectangle { color: "green"; width: 20; height: 50 }
-//                Rectangle { color: "blue"; width: 50; height: 20 }
-
                 Image {
                     id: trackIcon
-                    //anchors.left: parent.left;
                     anchors.verticalCenter: parent.verticalCenter
                     source: "bta.png"
                 }
@@ -51,20 +73,27 @@ ApplicationWindow {
                 AnimatedImage {
                     source: "playing_mark.gif"
                     id: playMark
-//                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    visible: isPlaying
                 }
             }
         }
-
     }
 
     ListModel {
         id: tracksListModel
+
         ListElement {
             title: "USB Track - Fade to Black"
+            isPlaying: false
         }
         ListElement {
             title: "BTA Track - 2"
+            isPlaying: false
+        }
+        ListElement {
+            title: "USB Track - 3"
+            isPlaying: false
         }
     }
 
@@ -72,9 +101,12 @@ ApplicationWindow {
         anchors.fill: parent
 
         ListView {
+            id: tracksListView
             model: tracksListModel
             width: parent.width
             delegate: trackDelegate
+
+            focus: true
         }
     }
 }
