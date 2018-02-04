@@ -17,7 +17,7 @@ ApplicationWindow {
     property var playingIndex : -1
 
     Component.onCompleted: {
-        for(var i = 0; i < 100; ++i)
+        for(var i = 0; i < 15; ++i)
         {
             var type = randomNumber() <= 50 ? TrackType.USB : TrackType.BTA
             tracksListModel.append({"title" : i, "type" : type, "isPlaying" : false})
@@ -41,6 +41,7 @@ ApplicationWindow {
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
+                propagateComposedEvents: true
 
                 function selectItem() {
                     parent.color = "grey"
@@ -99,18 +100,20 @@ ApplicationWindow {
         id: tracksListModel
     }
 
-    ScrollView {
+    ListView {
         anchors.fill: parent
+        id: tracksListView
+        model: tracksListModel
+        width: parent.width
+        delegate: trackDelegate
 
-        ListView {
-            id: tracksListView
-            model: tracksListModel
-            width: parent.width
-            delegate: trackDelegate
-
-            onCurrentItemChanged: console.log(currentIndex + ' selected')
-
-            focus: true
+        focus: true
+        clip: true
+        ScrollBar.vertical: ScrollBar {
+            id: scrollBar
         }
+
+        Keys.onUpPressed: scrollBar.decrease()
+        Keys.onDownPressed: scrollBar.increase()
     }
 }
