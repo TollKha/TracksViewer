@@ -5,6 +5,7 @@ import com.anatoliy.track_type 1.0
 import com.anatoliy.track 1.0
 
 ApplicationWindow {
+    // Util functions
     function randomNumber() {
         return Math.random() * 100
     }
@@ -21,6 +22,7 @@ ApplicationWindow {
 
     property var playingIndex : -1
 
+    // Create random list on app start
     Component.onCompleted: {
         for(var i = 0; i < 15; ++i)
         {
@@ -29,6 +31,7 @@ ApplicationWindow {
         }
     }
 
+    // List item view
     Component {
         id: trackDelegate
 
@@ -91,6 +94,8 @@ ApplicationWindow {
                     text: getTitle(type, title)
                     color: "black"
                     anchors.verticalCenter: parent.verticalCenter
+
+                    // Sorry for magic number "20"
                     width: trackBackground.width - (trackIcon.width + playMark.width + 20)
                 }
 
