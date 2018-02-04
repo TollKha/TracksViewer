@@ -4,6 +4,10 @@ import QtQuick.Layouts 1.3
 import com.anatoliy.trackviewer 1.0
 
 ApplicationWindow {
+    function randomNumber() {
+        return Math.random() * 100
+    }
+
     visible: true
     width: 640
     height: 480
@@ -12,13 +16,18 @@ ApplicationWindow {
 
     property var playingIndex : -1
 
+    Component.onCompleted: {
+        for(var i = 0; i < 100; ++i)
+        {
+            var type = randomNumber() <= 50 ? TrackType.USB : TrackType.BTA
+            tracksListModel.append({"title" : i, "type" : type, "isPlaying" : false})
+        }
+    }
+
     Component {
         id: trackDelegate
 
         Rectangle {
-            //propery bool isPlaying
-//            isPlaying : false
-
             width: parent.width
             height: 78
             color: "grey"
@@ -31,22 +40,27 @@ ApplicationWindow {
 
             MouseArea {
                 anchors.fill: parent
+                hoverEnabled: true
+
+                function selectItem() {
+                    parent.color = "grey"
+
+                    if (playingIndex != -1) {
+                        tracksListModel.setProperty(playingIndex, "isPlaying", false)
+                    }
+                    tracksListModel.setProperty(index, "isPlaying", true)
+                    playingIndex = index
+                    tracksListView.currentIndex = index
+                }
+
                 onPressed: {
                     parent.color = "darkgrey"
                 }
                 onReleased: {
-                    parent.color = "grey"
-                    //isPlaying = true
-
-                    if (playingIndex != -1) {
-                        tracksListModel.setProperty(playingIndex, "isPlaying", false)
-                        console.log(JSON.stringify(tracksListModel.get(playingIndex)))
-                    }
-                    tracksListModel.setProperty(index, "isPlaying", true)
-                    playingIndex = index
+                    selectItem()
                 }
-                onPressedChanged: {
-
+                onExited: {
+                    parent.color = "grey"
                 }
             }
 
@@ -83,22 +97,6 @@ ApplicationWindow {
 
     ListModel {
         id: tracksListModel
-
-        ListElement {
-            title: "1"
-            isPlaying: false
-            type: TrackType.USB
-        }
-        ListElement {
-            title: "2"
-            isPlaying: false
-            type: TrackType.BTA
-        }
-        ListElement {
-            title: "3"
-            isPlaying: false
-            type: TrackType.USB
-        }
     }
 
     ScrollView {
@@ -109,6 +107,8 @@ ApplicationWindow {
             model: tracksListModel
             width: parent.width
             delegate: trackDelegate
+
+            onCurrentItemChanged: console.log(currentIndex + ' selected')
 
             focus: true
         }
