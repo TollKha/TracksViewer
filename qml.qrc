@@ -5,6 +5,5 @@
         <file>usb.png</file>
         <file>bta.png</file>
         <file>playing_mark.gif</file>
-        <file>TrackElement.qml</file>
     </qresource>
 </RCC>

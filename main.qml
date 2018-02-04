@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import com.anatoliy.trackviewer 1.0
 
 ApplicationWindow {
     visible: true
@@ -64,7 +65,7 @@ ApplicationWindow {
 
                 Text {
                     id: trackTitle
-                    text: title
+                    text: (type == TrackType.USB ? "USB Track - " : "BTA Track - ") +  title
                     color: "black"
                     anchors.verticalCenter: parent.verticalCenter
                     width: trackBackground.width - (trackIcon.width + playMark.width + 20)
@@ -84,16 +85,19 @@ ApplicationWindow {
         id: tracksListModel
 
         ListElement {
-            title: "USB Track - Fade to Black"
+            title: "1"
             isPlaying: false
+            type: TrackType.USB
         }
         ListElement {
-            title: "BTA Track - 2"
+            title: "2"
             isPlaying: false
+            type: TrackType.BTA
         }
         ListElement {
-            title: "USB Track - 3"
+            title: "3"
             isPlaying: false
+            type: TrackType.USB
         }
     }
 
