@@ -17,6 +17,8 @@ public:
     Q_INVOKABLE void play(const QString& title, const int index) {
         qDebug() << index << "element is playing now";
         qDebug() << "Title: " << title;
+
+        //Call to some third-party code should be here
     }
 };
 
