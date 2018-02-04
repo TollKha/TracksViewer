@@ -2,6 +2,7 @@
 #define TRACK_H
 
 #include <QObject>
+#include <QDebug>
 
 class Track : public QObject
 {
@@ -12,6 +13,11 @@ public:
         USB,
         BTA
     };
+
+    Q_INVOKABLE void play(const QString& title, const int index) {
+        qDebug() << index << "element is playing now";
+        qDebug() << "Title: " << title;
+    }
 };
 
 #endif // TRACK_H

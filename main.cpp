@@ -11,7 +11,8 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
-    qmlRegisterType<Track>("com.anatoliy.trackviewer", 1, 0, "TrackType");
+    qmlRegisterType<Track>("com.anatoliy.track_type", 1, 0, "TrackType");
+    qmlRegisterType<Track>("com.anatoliy.track", 1, 0, "Track");
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;

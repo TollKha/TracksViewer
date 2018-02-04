@@ -1,11 +1,16 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
-import com.anatoliy.trackviewer 1.0
+import com.anatoliy.track_type 1.0
+import com.anatoliy.track 1.0
 
 ApplicationWindow {
     function randomNumber() {
         return Math.random() * 100
+    }
+
+    function getTitle(type, title) {
+        return (type == TrackType.USB ? "USB Track - " : "BTA Track - ") +  title
     }
 
     visible: true
@@ -52,6 +57,8 @@ ApplicationWindow {
                     tracksListModel.setProperty(index, "isPlaying", true)
                     playingIndex = index
                     tracksListView.currentIndex = index
+
+                    trackCpp.play(getTitle(type, title), index)
                 }
 
                 onPressed: {
@@ -80,7 +87,7 @@ ApplicationWindow {
 
                 Text {
                     id: trackTitle
-                    text: (type == TrackType.USB ? "USB Track - " : "BTA Track - ") +  title
+                    text: getTitle(type, title)
                     color: "black"
                     anchors.verticalCenter: parent.verticalCenter
                     width: trackBackground.width - (trackIcon.width + playMark.width + 20)
@@ -91,6 +98,9 @@ ApplicationWindow {
                     id: playMark
                     anchors.verticalCenter: parent.verticalCenter
                     visible: isPlaying
+                }
+                Track {
+                    id: trackCpp
                 }
             }
         }
