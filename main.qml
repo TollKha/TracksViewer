@@ -10,13 +10,13 @@ ApplicationWindow {
     }
 
     function getTitle(type, title) {
-        return (type == TrackType.USB ? "USB Track - " : "BTA Track - ") +  title
+        return (type === TrackType.USB ? "USB Track - " : "BTA Track - ") +  title
     }
 
     visible: true
     width: 640
     height: 480
-    title: qsTr("Scroll")
+    title: qsTr("Track viewer")
     id: mainWindow
 
     property var playingIndex : -1
@@ -65,7 +65,8 @@ ApplicationWindow {
                     parent.color = "darkgrey"
                 }
                 onReleased: {
-                    selectItem()
+                    if (containsMouse)
+                        selectItem()
                 }
                 onExited: {
                     parent.color = "grey"
